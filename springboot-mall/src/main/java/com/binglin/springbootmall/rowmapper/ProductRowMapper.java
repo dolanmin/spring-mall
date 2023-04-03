@@ -4,20 +4,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.Nullable;
 
+import com.binglin.springbootmall.constant.ProductCategory;
 import com.binglin.springbootmall.model.Product;
 
 public class ProductRowMapper implements RowMapper<Product> {
 
     @Override
-    @Nullable
     public Product mapRow(ResultSet resultSet, int i) throws SQLException {
         Product product = new Product();
 
         product.setProductId(resultSet.getInt("product_id"));
         product.setProductName(resultSet.getString("product_name"));
-        product.setCategory(resultSet.getString("category"));
+
+        String categoryStr = resultSet.getString("category");
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        product.setCategory(category);
+        // product.setCategory(ProductCategory.valueOf(resultSet.getString(categoryStr)));上面就是這段
+
         product.setImageUrl(resultSet.getString("image_url"));
         product.setPrice(resultSet.getInt("price"));
         product.setStock(resultSet.getInt("stock"));
