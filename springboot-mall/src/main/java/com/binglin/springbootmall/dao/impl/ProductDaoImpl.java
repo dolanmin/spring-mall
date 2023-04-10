@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
 import com.binglin.springbootmall.dao.ProductDao;
 import com.binglin.springbootmall.dto.ProductRequest;
 import com.binglin.springbootmall.model.Product;
@@ -75,6 +74,28 @@ public class ProductDaoImpl implements ProductDao {
         int productId = keyHolder.getKey().intValue();
 
         return productId;
+    }
+
+    @Override
+    public void updatedProduct(Integer productId, ProductRequest productRequest) {
+        String sql = "UPDATE product SET product_name = :productName, category = :category, image_Url = :imageUrl," +
+                "price=:price, stock=:stock, description=:description, last_modified_date=:lastModifiedDate" +
+                " WHERE product_id = :productId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+
+        map.put("productName", productRequest.getProductName());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        map.put("lastModifiedDate", new Date());
+
+        namedParameterJdbcTemplate.update(sql, map);
+
     }
 
 }

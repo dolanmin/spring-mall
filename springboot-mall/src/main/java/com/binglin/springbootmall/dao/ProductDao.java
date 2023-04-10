@@ -12,4 +12,7 @@ public interface ProductDao {
     Product getProductById(Integer productId); // 會根據 productId去查詢這個商品的數據出來
 
     Integer createProduct(ProductRequest productRequest);
+
+    void updatedProduct(Integer productId, ProductRequest productRequest);
+
 }
